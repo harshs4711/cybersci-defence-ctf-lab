@@ -90,7 +90,23 @@ This work was performed in the provided local CyberSci Defence CTF 101 training 
 
 Credit for the original application and attack simulations belongs to CyberSci and the workshop creators. This repository documents my remediation work; I did not build the original application.
 
-Verification flags, active secrets, and credentials are omitted from this public write-up.
+Verification flags, active secrets, and credentials are omitted from this public write-up..
+## Evidence
+
+### Stored XSS Remediation
+Replaced unsafe HTML rendering with React text rendering for questions and answers.
+
+![Stored XSS fix](19-Scenario3-XSS-Fix.png)
+
+### Normal Application Display
+Questions and answers remain readable. Stored HTML payloads display as text.
+
+![Normal application display](21-Scenario3-Normal-Use.png)
+
+### Remediation Commit History
+Five separate commits record the four scenario fixes and additional profile authorization protection.
+
+![Local remediation commits](22-Final-Git-Commits.png)
 
 ## Author
 
