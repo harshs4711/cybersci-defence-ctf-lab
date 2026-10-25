@@ -93,20 +93,55 @@ Credit for the original application and attack simulations belongs to CyberSci a
 Verification flags, active secrets, and credentials are omitted from this public write-up..
 ## Evidence
 
-### Stored XSS Remediation
-Replaced unsafe HTML rendering with React text rendering for questions and answers.
+### Scenario 1 — Payment Authorization
 
-![Stored XSS fix](19-Scenario3-XSS-Fix.png)
+Added candidate role and ownership checks to prevent users from accessing another candidate's payment details.
 
-### Normal Application Display
-Questions and answers remain readable. Stored HTML payloads display as text.
+![Payment authorization fix](12-Payment-Authorization-Fix.png)
 
-![Normal application display](21-Scenario3-Normal-Use.png)
+The provided attack simulation reported that the payment authorization attack was blocked after remediation.
 
-### Remediation Commit History
-Five separate commits record the four scenario fixes and additional profile authorization protection.
+![Payment authorization retest passed](13-Scenario1-After-Patch.png)
 
-![Local remediation commits](22-Final-Git-Commits.png)
+### Scenario 2 — JWT Forgery
+
+Replaced the hardcoded signing secret with a randomly generated environment-based secret and restricted token validation to HS256.
+
+![JWT security fix](15-Scenario2-JWT-Fix.png)
+
+The provided JWT forgery attack simulation passed after remediation.
+
+![JWT forgery retest passed](16-Scenario2-After-Patch.png)
+
+### Scenario 3 — Stored XSS
+
+Replaced unsafe HTML rendering with React text rendering for both questions and answers.
+
+![Stored XSS code fix](19-Scenario3-XSS-Fix.png)
+
+The provided stored XSS attack simulation passed after remediation.
+
+![Stored XSS retest passed](20-Scenario3-After-Patch.png)
+
+Normal questions and answers remain readable. Stored HTML payloads are displayed as text rather than interpreted as HTML.
+
+![Normal application display after XSS fix](21-Scenario3-Normal-Use.png)
+
+### Scenario 4 — SQL Injection
+
+Replaced the concatenated candidate login query with a parameterized query.
+
+![Parameterized candidate login query](08-Parameterized-Query-Fix.png)
+
+The provided SQL injection attack simulation passed after remediation.
+
+![SQL injection retest passed](09-Scenario4-After-Patch.png)
+
+### Local Remediation Commit History
+
+Five separate commits in the original lab repository record the four scenario fixes and additional candidate profile ownership protection.
+
+![Local remediation commit history](22-Final-Git-Commits.png)
 
 ## Author
 
