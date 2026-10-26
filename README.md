@@ -93,53 +93,111 @@ Credit for the original application and attack simulations belongs to CyberSci a
 Verification flags, active secrets, and credentials are omitted from this public write-up..
 ## Evidence
 
+## Evidence
+
+The screenshots below document the vulnerable baseline, remediation, and successful retest for each supplied attack scenario.
+
 ### Scenario 1 — Payment Authorization
 
-Added candidate role and ownership checks to prevent users from accessing another candidate's payment details.
+#### Before the Fix
 
-![Payment authorization fix](12-Payment-Authorization-Fix.png)
+The provided attack simulation reported that the service was vulnerable.
 
-The provided attack simulation reported that the payment authorization attack was blocked after remediation.
+![Payment authorization vulnerable baseline](11-Scenario1-Before-Patch.png)
 
-![Payment authorization retest passed](13-Scenario1-After-Patch.png)
+#### Remediation
+
+Added candidate role and ownership checks to protect payment details.
+
+![Candidate payment ownership check](12-Payment-Authorization-Fix.png)
+
+#### After the Fix
+
+The provided attack simulation reported that the attack was blocked.
+
+![Payment authorization successful retest](13-Scenario1-After-Patch.png)
 
 ### Scenario 2 — JWT Forgery
 
-Replaced the hardcoded signing secret with a randomly generated environment-based secret and restricted token validation to HS256.
+#### Before the Fix
 
-![JWT security fix](15-Scenario2-JWT-Fix.png)
+The provided JWT forgery simulation reported that the service was vulnerable.
 
-The provided JWT forgery attack simulation passed after remediation.
+![JWT forgery vulnerable baseline](14-Scenario2-Before-Patch.png)
 
-![JWT forgery retest passed](16-Scenario2-After-Patch.png)
+#### Remediation
+
+Replaced the hardcoded signing secret with an environment-based secret. The application rejects missing secrets or secrets shorter than 32 characters at startup.
+
+![JWT environment secret loading](15a-Scenario2-JWT-Code-Fix.png)
+
+Restricted token validation to HS256 and required an expiration claim.
+
+![HS256 validation and required expiration](15b-Scenario2-JWT-Code-Fix.png)
+
+#### Rebuild
+
+Rebuilt and restarted the backend successfully after applying the JWT changes.
+
+![Successful backend rebuild](15-Scenario2-JWT-Fix.png)
+
+#### After the Fix
+
+The provided JWT forgery simulation reported that the attack was blocked.
+
+![JWT forgery successful retest](16-Scenario2-After-Patch.png)
 
 ### Scenario 3 — Stored XSS
 
-Replaced unsafe HTML rendering with React text rendering for both questions and answers.
+#### Before the Fix
 
-![Stored XSS code fix](19-Scenario3-XSS-Fix.png)
+The provided stored XSS simulation reported that the service was vulnerable.
 
-The provided stored XSS attack simulation passed after remediation.
+![Stored XSS vulnerable baseline](18-Scenario3-Before-Patch.png)
 
-![Stored XSS retest passed](20-Scenario3-After-Patch.png)
+#### Remediation
 
-Normal questions and answers remain readable. Stored HTML payloads are displayed as text rather than interpreted as HTML.
+Replaced dangerouslySetInnerHTML with ordinary React text rendering for questions and answers.
 
-![Normal application display after XSS fix](21-Scenario3-Normal-Use.png)
+![Safe React rendering code changes](19-Scenario3-XSS-Fix.png)
+
+#### After the Fix
+
+The provided stored XSS simulation reported that the attack was blocked.
+
+![Stored XSS successful retest](20-Scenario3-After-Patch.png)
+
+#### Normal Application Display
+
+Questions and answers remain readable. Stored HTML payloads appear as text rather than being interpreted as HTML.
+
+![Normal questions and answers after remediation](21-Scenario3-Normal-Use.png)
 
 ### Scenario 4 — SQL Injection
 
-Replaced the concatenated candidate login query with a parameterized query.
+#### Before the Fix
+
+The provided SQL injection simulation reported that the service was vulnerable.
+
+![SQL injection vulnerable baseline](06-Scenario4-Before-Patch.png)
+
+#### Remediation
+
+Replaced the concatenated candidate login query with a parameterized query, passing the email separately from the SQL statement.
 
 ![Parameterized candidate login query](08-Parameterized-Query-Fix.png)
 
-The provided SQL injection attack simulation passed after remediation.
+#### After the Fix
 
-![SQL injection retest passed](09-Scenario4-After-Patch.png)
+The provided SQL injection simulation reported that the attack was blocked.
+
+![SQL injection successful retest](09-Scenario4-After-Patch.png)
 
 ### Local Remediation Commit History
 
-Five separate commits in the original lab repository record the four scenario fixes and additional candidate profile ownership protection.
+Five separate commits record the four scenario fixes and additional candidate profile ownership protection.
+
+These commit IDs belong to the original lab repository inside the VM, rather than this public documentation repository.
 
 ![Local remediation commit history](22-Final-Git-Commits.png)
 
